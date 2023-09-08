@@ -49,6 +49,7 @@ export default function LoginCard() {
 				return;
 			}
 			localStorage.setItem("user-threads", JSON.stringify(data));
+			document.cookie = `jwt=${data.token}`;
 			setUser(data);
 		} catch (error) {
 			console.log(error)
