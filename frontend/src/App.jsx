@@ -14,7 +14,7 @@ function App() {
 	console.log(user);
 	return (
 		<Container maxW='620px'>
-			<Header />
+			
 			<Routes>
 				<Route path='/' element={user ? <HomePage /> : <Navigate to='/auth' />} />
 				<Route path='/auth' element={!user ? <AuthPage /> : <Navigate to='/' />} />
