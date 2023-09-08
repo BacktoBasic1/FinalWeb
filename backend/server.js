@@ -5,22 +5,16 @@ import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import { v2 as cloudinary } from "cloudinary";
+import cors from 'cors';
 
 dotenv.config();
-
-const cors = require("cors")
 
 connectDB();
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-const corsOptions = {
-  origin: 'https://frontendtest1-dhui.onrender.com/',
-};
-
-// Sử dụng middleware CORS với tùy chọn cấu hình
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 cloudinary.config({
