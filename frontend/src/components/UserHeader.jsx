@@ -10,6 +10,9 @@ import userAtom from "../atoms/userAtom";
 import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
 import useShowToast from "../hooks/useShowToast";
+import Cookies from "js-cookie";
+
+const jwt = Cookies.get('jwt');
 
 const UserHeader = ({ user }) => {
 	const toast = useToast();
@@ -40,10 +43,11 @@ const UserHeader = ({ user }) => {
 
 		setUpdating(true);
 		try {
-			const res = await fetch(`/api/users/follow/${user._id}`, {
+			const res = await fetch(`https://testserver3-poou.onrender.com/api/users/follow/${user._id}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					"Authorization": jwt
 				},
 			});
 			const data = await res.json();

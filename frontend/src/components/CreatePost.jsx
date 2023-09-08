@@ -27,6 +27,10 @@ import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
 import { useParams } from "react-router-dom";
 
+import Cookies from "js-cookie";
+
+const jwt = Cookies.get('jwt');
+
 const MAX_CHAR = 500;
 
 const CreatePost = () => {
@@ -57,10 +61,11 @@ const CreatePost = () => {
 	const handleCreatePost = async () => {
 		setLoading(true);
 		try {
-			const res = await fetch("/api/posts/create", {
+			const res = await fetch("https://testserver3-poou.onrender.com/api/posts/create", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					"Authorization": jwt
 				},
 				body: JSON.stringify({ postedBy: user._id, text: postText, img: imgUrl }),
 			});

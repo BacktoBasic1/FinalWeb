@@ -10,6 +10,10 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import postsAtom from "../atoms/postsAtom";
+import Cookies from "js-cookie";
+
+const jwt = Cookies.get('jwt');
+
 
 const PostPage = () => {
 	const { user, loading } = useGetUserProfile();
@@ -25,7 +29,13 @@ const PostPage = () => {
 		const getPost = async () => {
 			setPosts([]);
 			try {
-				const res = await fetch(`/api/posts/${pid}`);
+				const res = await fetch(`https://testserver3-poou.onrender.com/api/posts/${pid}`, {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": jwt
+					},
+				});
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
@@ -43,8 +53,12 @@ const PostPage = () => {
 		try {
 			if (!window.confirm("Are you sure you want to delete this post?")) return;
 
-			const res = await fetch(`/api/posts/${currentPost._id}`, {
+			const res = await fetch(`https://testserver3-poou.onrender.com/api/posts/${currentPost._id}`, {
 				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": jwt
+				},
 			});
 			const data = await res.json();
 			if (data.error) {

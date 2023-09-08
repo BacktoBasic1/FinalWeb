@@ -15,6 +15,10 @@ import { useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast";
+import Cookies from "js-cookie";
+
+const jwt = Cookies.get('jwt');
+
 
 export default function UpdateProfilePage() {
 	const [user, setUser] = useRecoilState(userAtom);
@@ -37,10 +41,11 @@ export default function UpdateProfilePage() {
 		if (updating) return;
 		setUpdating(true);
 		try {
-			const res = await fetch(`/api/users/update/${user._id}`, {
+			const res = await fetch(`https://testserver3-poou.onrender.com/api/users/update/${user._id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Authorization": jwt
 				},
 				body: JSON.stringify({ ...inputs, profilePic: imgUrl }),
 			});

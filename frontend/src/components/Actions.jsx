@@ -19,6 +19,9 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
+import Cookies from "js-cookie";
+
+const jwt = Cookies.get('jwt');
 
 const Actions = ({ post }) => {
 	const user = useRecoilValue(userAtom);
@@ -40,6 +43,7 @@ const Actions = ({ post }) => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Authorization": jwt
 				},
 			});
 			const data = await res.json();
@@ -78,10 +82,11 @@ const Actions = ({ post }) => {
 		if (isReplying) return;
 		setIsReplying(true);
 		try {
-			const res = await fetch("/api/posts/reply/" + post._id, {
+			const res = await fetch("https://testserver3-poou.onrender.com/api/posts/reply/" + post._id, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Authorization": jwt
 				},
 				body: JSON.stringify({ text: reply }),
 			});

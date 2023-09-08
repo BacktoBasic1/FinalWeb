@@ -11,6 +11,10 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
 
+import Cookies from "js-cookie";
+
+const jwt = Cookies.get('jwt');
+
 const Post = ({ post, postedBy }) => {
 	const [user, setUser] = useState(null);
 	const showToast = useShowToast();
@@ -21,7 +25,14 @@ const Post = ({ post, postedBy }) => {
 	useEffect(() => {
 		const getUser = async () => {
 			try {
-				const res = await fetch("/api/users/profile/" + postedBy);
+				const res = await fetch("https://testserver3-poou.onrender.com/api/users/profile/" + postedBy,{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": jwt
+					},
+				});
+
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
@@ -42,8 +53,12 @@ const Post = ({ post, postedBy }) => {
 			e.preventDefault();
 			if (!window.confirm("Are you sure you want to delete this post?")) return;
 
-			const res = await fetch(`/api/posts/${post._id}`, {
+			const res = await fetch(`https://testserver3-poou.onrender.com/api/posts/${post._id}`, {
 				method: "DELETE",
+				headers: {
+						"Content-Type": "application/json",
+						"Authorization": jwt
+					},
 			});
 			const data = await res.json();
 			if (data.error) {

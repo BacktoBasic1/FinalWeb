@@ -3,6 +3,9 @@ import { useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import { FiLogOut } from "react-icons/fi";
+import Cookies from "js-cookie";
+const jwt = Cookies.get('jwt');
+
 
 const LogoutButton = () => {
 	const setUser = useSetRecoilState(userAtom);
@@ -10,10 +13,11 @@ const LogoutButton = () => {
 
 	const handleLogout = async () => {
 		try {
-			const res = await fetch("/api/users/logout", {
+			const res = await fetch("https://testserver3-poou.onrender.com/api/users/logout", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					"Authorization": jwt
 				},
 			});
 			const data = await res.json();
@@ -24,6 +28,8 @@ const LogoutButton = () => {
 			}
 
 			localStorage.removeItem("user-threads");
+			Cookies.remove('jwt');
+        	Cookies.set('jwt','');
 			setUser(null);
 		} catch (error) {
 			showToast("Error", error, "error");
