@@ -35,7 +35,7 @@ export default function LoginCard() {
 		setLoading(true);
 		try {
 			console.log(inputs)
-			const res = await fetch("/api/users/login", {
+			const res = await fetch("https://testserver3-poou.onrender.com/api/users/login", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
