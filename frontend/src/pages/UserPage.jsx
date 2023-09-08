@@ -9,7 +9,7 @@ import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 import Cookies from "js-cookie";
 
-const jwt = Cookies.get('jwt');
+
 const UserPage = () => {
 	const { user, loading } = useGetUserProfile();
 	const { username } = useParams();
@@ -21,6 +21,7 @@ const UserPage = () => {
 		const getPosts = async () => {
 			setFetchingPosts(true);
 			try {
+				const jwt = Cookies.get('jwt');
 				const res = await fetch(`https://testserver3-poou.onrender.com/api/posts/user/${username}`,{
 					method: "GET",
 					headers: {
