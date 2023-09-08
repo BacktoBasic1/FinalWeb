@@ -4,7 +4,7 @@ import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-
+import Cookies from "js-cookie";
 const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
@@ -14,7 +14,13 @@ const HomePage = () => {
 			setLoading(true);
 			setPosts([]);
 			try {
-				const res = await fetch("https://testserver3-poou.onrender.com/api/posts/feed");
+				const jwt = Cookies.get('jwt');
+
+				const res = await fetch("https://testserver3-poou.onrender.com/api/posts/feed", {
+    				headers: {
+						"Authorization": jwt
+					}
+				});
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
